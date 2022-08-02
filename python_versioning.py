@@ -58,7 +58,7 @@ def get_next_version(version_file_path, release_type='alpha'):
     next_version = Version(int(m.group(1)), int(m.group(2)), 1)
 
     # Combine and retrieve if we are higher than git version
-    if next_version < highest_from_git:
+    if next_version < highest_from_git or not(highest_from_git < next_version):
         next_version = highest_from_git
         if head_commit != next_version.git_tag.commit:
             next_version = next_version.increment()
