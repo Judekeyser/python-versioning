@@ -46,3 +46,36 @@ Beta build:
 ```py
 python python_versioning.py version.txt beta
 ```
+
+## Examples
+
+## Use case scenario 1
+
+Given a repository for which `git tag -l` yields an old tag:
+```
+(pyver) D:\projects\pyver>git tag -l
+v0.0.0
+```
+Given also a `version.txt` file containing:
+```
+0.1
+```
+The next version is the one of the file (because file is higher):
+```
+(pyver) D:\projects\pyver>python pyver.py version.txt beta
+0.1.1b+66110d0
+```
+Let us push this tag:
+```
+git tag v0.1.1b+66110d0
+```
+Next version is unchanged (because head commit is the highest tag and it matches the file):
+```
+(pyver) D:\projects\pyver>python pyver.py version.txt beta
+0.1.1b+66110d0
+```
+Do a simple commit, and recompute the versioning: it changes because the head commit is not tagged:
+```
+(pyver) D:\projects\pyver>python pyver.py version.txt beta
+0.1.2b+e9fa8aa
+```
