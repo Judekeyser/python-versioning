@@ -5,17 +5,10 @@ The script does not proceed to any side-effect on the repository, nor fetches. T
 
 ## Versioning convention
 
-In a future work, we plan to comply with PEP440 : https://peps.python.org/pep-0440/.
-The following versioning strategy is used for now.
+A version is a string of the form `{major}.{minor}.{patch}` where major, minor and patch are numeric symbols (greedily identified).
 
-A version is a string of the form `{major}.{minor}.{patch}{remaining}` where major, minor and patch are numeric symbols (greedily identified).
-The versioning proposed by this utility uses a remaining scheme that is:
-- empty for production builds
-- prefixed with `a` for alpha-releases, then followed by a pseudo-unique identifier
-- prefixed with `b` for beta-releases, then followed by a pseudo-unique identifier
-
-The versioning is semi-automated, in the sense that `{major}.{minor}` follows the specification of a local file. The `{patch}` version is automatically
-incremented.
+The versioning is semi-automated, in the sense that `{major}.{minor}` follows the specification of a local file.
+The `{patch}` version is automatically incremented, based on the GIT repository tag list.
 
 ## Install
 
@@ -30,52 +23,16 @@ Should be good with any of Python 3.
 
 - `GitPython` : see https://gitpython.readthedocs.io/en/stable/ 
 
-## Usage
+## Usage example
 
-Assuming `version.txt` contains a `{major}.{minor}` version:
-
-Production build:
-```py
-python python_versioning.py version.txt production
+Each line represents a run of the script.
 ```
-Alpha build:
-```py
-python python_versioning.py version.txt alpha
-```
-Beta build:
-```py
-python python_versioning.py version.txt beta
-```
-
-## Examples
-
-## Use case scenario 1
-
-Given a repository for which `git tag -l` yields an old tag:
-```
-(pyver) D:\projects\pyver>git tag -l
-v0.0.0
-```
-Given also a `version.txt` file containing:
-```
-0.1
-```
-The next version is the one of the file (because file is higher):
-```
-(pyver) D:\projects\pyver>python pyver.py version.txt beta
-0.1.1b+66110d0
-```
-Let us push this tag:
-```
-git tag v0.1.1b+66110d0
-```
-Next version is unchanged (because head commit is the highest tag and it matches the file):
-```
-(pyver) D:\projects\pyver>python pyver.py version.txt beta
-0.1.1b+66110d0
-```
-Do a simple commit, and recompute the versioning: it changes because the head commit is not tagged:
-```
-(pyver) D:\projects\pyver>python pyver.py version.txt beta
-0.1.2b+e9fa8aa
+HEAD_COMMIT | HIGHEST TAG IN GIT | COMMIT OF HIGHEST TAG | MANUAL VERSION | RESULT OF SCRIPT
+    1bf7316 |                  / |                     / |            0.0 |            0.0.1
+    1bf7316 |             v0.0.1 |               1bf7316 |            0.0 |            0.0.1
+    a05b2d8 |             v0.0.1 |               1bf7316 |            0.0 |            0.0.2
+    a05b2d8 |             v0.0.1 |               1bf7316 |            0.1 |            0.1.1
+    f917346 |             v0.0.1 |               1bf7316 |            0.1 |            0.1.1
+    5f3f5e5 |             v0.1.1 |               f917346 |            0.1 |            0.1.2
+    5f3f5e5 |             v0.2.1 |               5f3f5e5 |            0.1 |            0.2.1
 ```

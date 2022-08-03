@@ -42,18 +42,18 @@ def get_next_version(version_file_path):
     """
     # Get information from Git Repository
     repo = git.Repo(search_parent_directories=True)
-    highest_git_tag = max((GitVersionTag(t) for t in repo.tags if str(t).startswith('v')), default=Version(0,0,0))
+    highest_git_tag = max((GitVersionTag(_) for _ in repo.tags if str(_).startswith('v')), default=Version(0,0,0))
 
     # Get information from auxiliary file
     with open(version_file_path, 'r') as f:
         line = f.readline().strip()
     m = re.compile(r'(\d+)\.(\d+)').match(line)
-    next_version = Version(int(m.group(1)), int(m.group(2)), 0)
+    next_version = Version(*(int(m.group(_)) for _ in range(1,3)), 0)
 
     # Combine and retrieve if we are higher than git version
     if next_version < highest_git_tag:
         next_version = highest_git_tag
-    if repo.head.commit != highest_git_tag.commit:
+    if repo.head.commit != next_version.commit:
         next_version = next_version.increment()
     
     return '.'.join((str(i) for i in next_version.expand))
