@@ -28,7 +28,7 @@ class GitTag(Version):
 def get_next_version(collection=[], lower_bound='0.0', cursor=None):
     """
     Get the next version based on the provided collection.
-    The next version is guaranteed to be strictly higher than the provided lower_bound,
+    The next version is guaranteed to be higher than the provided lower_bound,
     only if the highest point in the collection corresponds to a different cursor than the provided one.
     
     Parameters
@@ -36,7 +36,7 @@ def get_next_version(collection=[], lower_bound='0.0', cursor=None):
     collection
         The collection of versions to consider
     lower_bound
-        The lower bound we guarantee to be strictly higher
+        The lower bound we guarantee to be higher
     cursor
         The cursor we are in. Versions might be associated to cursors.
     
