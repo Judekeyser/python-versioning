@@ -60,5 +60,5 @@ def get_next_version(version_file_path):
 
 
 if __name__ == '__main__':
-    import sys    # Return a string representation, based on head commit and release type
+    import sys
     print(get_next_version(sys.argv[1]))
