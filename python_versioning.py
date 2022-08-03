@@ -18,7 +18,7 @@ class Version:
 
 
 class GitVersionTag(Version):
-    __PATTERN = re.compile(r'v(\d+)\.(\d+)\.(\d+)([^\d]*)?')
+    __PATTERN = re.compile(r'v(\d+)\.(\d+)\.(\d+)([^\d].)*')
 
     def __init__(self, git_tag):
         m = GitVersionTag.__PATTERN.match(str(git_tag))
